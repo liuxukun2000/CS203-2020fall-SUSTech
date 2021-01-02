@@ -8,7 +8,7 @@
 #include <queue>
 #include<cmath>
 using namespace std;
-int n,m,u,v,t,head[110010],Next[250010],cnt=1,to[250010],dnf[210010],low[210010],s[210010],top,cir[210010],num,out[210010];
+int n,m,u,v,t,head[110010],Next[250010],cnt=1,to[250010],dfn[210010],low[210010],s[210010],top,cir[210010],num,out[210010];
 int sum[210010],d[110000];
 vector<int> edg[210000];
 inline void add(int x,int y)
@@ -19,22 +19,22 @@ inline void add(int x,int y)
 }
 void Tarjan(int x)
 {
-    low[x]=dnf[x]=cnt++;
+    low[x]=dfn[x]=cnt++;
     s[++top]=x;
     for(int i=head[x];i;i=Next[i])
     {
         int y=to[i];
-        if(!dnf[y])
+        if(!dfn[y])
         {
             Tarjan(y);
             low[x]=min(low[x],low[y]);
         }
         else if(!cir[y])
         {
-            low[x]=min(low[x],dnf[y]);
+            low[x]=min(low[x],dfn[y]);
         }
     }
-    if(low[x]==dnf[x])
+    if(low[x]==dfn[x])
     {
         cir[x]=++num;
         sum[num]++;
@@ -76,7 +76,7 @@ int main()
     cnt=1;
     for(int i=1;i<=m;i++)
     {
-        if(!dnf[i]) Tarjan(i);
+        if(!dfn[i]) Tarjan(i);
     }
     for(int i=1;i<=m;i++)
     {
